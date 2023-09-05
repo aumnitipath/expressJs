@@ -3,11 +3,13 @@ const { readdirSync } = require("fs");
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParse = require("body-parser");
+const connectDb = require("./config/db");
 
 // const productRouters = require("./routes/product");
 // const authRouters = require("./routes/auth");
 
 const app = express();
+connectDb();
 
 app.use(morgan("dev"));
 app.use(cors());
