@@ -8,15 +8,17 @@ const {
   remove,
 } = require("../controllers/product");
 
-router.get("/product", list);
+//middleware
+const { auth } = require("../middleware/auth");
 
-router.get("/product/:id", read);
+router.get("/product", auth, list);
 
-router.post("/product", create);
+router.get("/product/:id", auth, read);
 
-router.put("/product/:id", update);
+router.post("/product", auth, create);
 
-router.delete("/product/:id", remove);
-const a = 10;
+router.put("/product/:id", auth, update);
+
+router.delete("/product/:id", auth, remove);
 
 module.exports = router;
