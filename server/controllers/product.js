@@ -46,7 +46,19 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
-    const updated = await Product.findOneAndUpdate({ _id: id }, req.body, {
+    let newData = req.body;
+
+    if (typeof req.file !== "undefined") {
+      newData.file = req.file.filename;
+      await fs.unlink("./uploads/" + newData.fileOld, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Edit Success");
+        }
+      });
+    }
+    const updated = await Product.findOneAndUpdate({ _id: id }, newData, {
       new: true,
     }).exec();
 

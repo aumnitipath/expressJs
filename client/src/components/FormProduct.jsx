@@ -19,15 +19,30 @@ const FormProduct = () => {
   }, []);
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    // console.log(e.target.files);
+
+    if (e.target.name === "file") {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.files[0],
+      });
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    create(form)
+    const formWithImageData = new FormData();
+    for (let key in form) {
+      formWithImageData.append(key, form[key]);
+    }
+
+    // console.log(formWithImageData);
+    create(formWithImageData)
       .then((res) => {
         console.log(res.data);
         loadData();
@@ -47,7 +62,7 @@ const FormProduct = () => {
   return (
     <div>
       FormProduct
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           type="text"
           name="name"
@@ -55,6 +70,7 @@ const FormProduct = () => {
           placeholder="name"
         />
         <br />
+
         <input
           type="text"
           name="detail"
@@ -62,12 +78,17 @@ const FormProduct = () => {
           onChange={(e) => handleChange(e)}
         />
         <br />
+
+        <input type="file" name="file" onChange={(e) => handleChange(e)} />
+        <br />
+
         <input
           type="text"
           name="price"
           placeholder="price"
           onChange={(e) => handleChange(e)}
         />
+
         <button>Submit</button>
       </form>
       <table className="table">
@@ -76,6 +97,7 @@ const FormProduct = () => {
             <th scope="col">#</th>
             <th scope="col">name</th>
             <th scope="col">detail</th>
+            <th scope="col">file</th>
             <th scope="col">price</th>
             <th scope="col">action</th>
             <th scope="col">edit</th>
@@ -88,6 +110,7 @@ const FormProduct = () => {
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.detail}</td>
+                  <td>{item.file}</td>
                   <td>{item.price}</td>
                   <td onClick={() => handleRemove(item._id)}>delete</td>
                   <td>

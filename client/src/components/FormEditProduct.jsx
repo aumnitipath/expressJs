@@ -10,6 +10,7 @@ const FormEditProduct = () => {
     detail: "",
     price: "",
   });
+  const [fileOld, setFileOld] = useState();
 
   useEffect(() => {
     loadData(params.id);
@@ -18,20 +19,37 @@ const FormEditProduct = () => {
   const loadData = async (id) => {
     read(id).then((res) => {
       setData(res.data);
+      setFileOld(res.data.file);
     });
   };
 
   const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
+    // console.log(e.target.files);
+
+    if (e.target.name === "file") {
+      setData({
+        ...data,
+        [e.target.name]: e.target.files[0],
+      });
+    } else {
+      setData({
+        ...data,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data);
-    update(data, params.id)
+    console.log(fileOld);
+    const formWithImageData = new FormData();
+    for (let key in data) {
+      formWithImageData.append(key, data[key]);
+    }
+
+    formWithImageData.append("fileOld", fileOld);
+    update(formWithImageData, params.id)
       .then((res) => {
         console.log(res.data);
         navigate("/");
@@ -40,7 +58,7 @@ const FormEditProduct = () => {
   };
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           type="text"
           name="name"
@@ -49,6 +67,7 @@ const FormEditProduct = () => {
           value={data.name}
         />
         <br />
+
         <input
           type="text"
           name="detail"
@@ -57,6 +76,10 @@ const FormEditProduct = () => {
           onChange={(e) => handleChange(e)}
         />
         <br />
+
+        <input type="file" name="file" onChange={(e) => handleChange(e)} />
+        <br />
+
         <input
           type="text"
           name="price"
