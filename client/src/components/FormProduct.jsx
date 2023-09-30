@@ -152,7 +152,7 @@ const FormProduct = () => {
                     <TableCell>{item.price}</TableCell>
                     <TableCell>
                       <DeleteIcon
-                        className="cursor-pointer"
+                        className="cursor-pointer bg-orange-200"
                         color="error"
                         onClick={() => handleRemove(item._id)}
                       />
