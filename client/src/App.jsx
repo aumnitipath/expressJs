@@ -1,9 +1,13 @@
-import "./App.css";
+import { Box, CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import FormProduct from "./components/FormProduct";
+import "./App.css";
 import FormEditProduct from "./components/FormEditProduct";
+import FormProduct from "./components/FormProduct";
+import TestRedux1 from "./components/TestRedux1";
+import TestRedux2 from "./components/TestRedux2";
+import Login from "./components/pages/auth/Login";
+import Register from "./components/pages/auth/Register.jsx";
 import HeaderBar from "./layout/HeaderBar";
-import { CssBaseline, Box } from "@mui/material";
 import SideBar from "./layout/SideBar";
 
 function App() {
@@ -11,6 +15,11 @@ function App() {
     <BrowserRouter>
       <>
         <CssBaseline />
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+
         <div className="app">
           <SideBar />
           <main className="content">
@@ -25,6 +34,9 @@ function App() {
             </div>
           </main>
         </div>
+        {/* <TestRedux1 />
+        <hr />
+        <TestRedux2 /> */}
       </>
     </BrowserRouter>
   );
