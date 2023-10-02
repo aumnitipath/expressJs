@@ -55,7 +55,8 @@ export default function Login() {
       .then((res) => {
         console.log(res);
         alert(res.data);
-        dispatch( //ส่ง name role token เก็บใน redux
+        dispatch(
+          //ส่ง name role token เก็บใน redux
           loginRedux({
             name: res.data.payload.user.name,
             role: res.data.payload.user.role,
@@ -70,7 +71,7 @@ export default function Login() {
 
   const roleRedirects = (role) => {
     if (role === "user") {
-      navigate("/user");
+      navigate("/user/index");
     } else {
       navigate("/admin/index");
     }

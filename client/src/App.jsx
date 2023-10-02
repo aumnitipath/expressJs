@@ -6,6 +6,7 @@ import FormEditProduct from "./components/FormEditProduct";
 import FormProduct from "./components/FormProduct";
 import TestRedux1 from "./components/TestRedux1";
 import TestRedux2 from "./components/TestRedux2";
+import NotfoundPage from "./components/pages/NotfoundPage";
 import HomePageAdmin from "./components/pages/admin/HomePageAdmin";
 import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/auth/Register.jsx";
@@ -14,11 +15,11 @@ import { currentUser } from "./functions/auth";
 import HeaderBar from "./layout/HeaderBar";
 import SideBar from "./layout/SideBar";
 import AdminRoute from "./routes/AdminRoute";
-import UserRoute from "./routes/UserRoute"; //ส่งข้อมูลเข้าไปเก็บใน store
+import UserRoute from "./routes/UserRoute";
 import { login } from "./store/userSlice";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); //ส่งข้อมูลเข้าไปเก็บใน store
 
   const idToken = localStorage.getItem("token"); // แกะเอา token ออกมาจาก localStorage
   // console.log("token :", idToken);
@@ -42,6 +43,12 @@ function App() {
 
         {/* Public */}
         <Routes>
+          <Route
+            path="*"
+            element={
+              <NotfoundPage text="    The page you’re looking for doesn’t exist." />
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
 
