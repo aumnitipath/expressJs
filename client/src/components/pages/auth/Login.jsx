@@ -13,7 +13,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../../functions/auth";
+import { login as loginRedux } from "../../../store/userSlice";
 
 function Copyright(props) {
   return (
@@ -33,11 +36,12 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -47,12 +51,29 @@ export default function Login() {
       password: data.get("password"),
     };
 
-    login(formData)
+    login(formData) //ส่งข้อมูล login ไปหลังบ้าน
       .then((res) => {
         console.log(res);
         alert(res.data);
+        dispatch( //ส่ง name role token เก็บใน redux
+          loginRedux({
+            name: res.data.payload.user.name,
+            role: res.data.payload.user.role,
+            token: res.data.token,
+          })
+        );
+        localStorage.setItem("token", res.data.token); // เก็บ token ที่ login เข้ามาแล้วไว้ใน localStorage
+        roleRedirects(res.data.payload.user.role);
       })
       .catch((err) => console.log(err));
+  };
+
+  const roleRedirects = (role) => {
+    if (role === "user") {
+      navigate("/user");
+    } else {
+      navigate("/admin/index");
+    }
   };
 
   return (

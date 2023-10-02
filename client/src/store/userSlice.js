@@ -9,9 +9,9 @@ export const useSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    login: (state) => {
-      state.value = "aum login";
-      state.user = "aum user";
+    login: (state, action) => { //action คือข้อมูลที่ส่งมากับ function login
+      state.value = "login ja";
+      state.user = action.payload;
     },
     logout: (state) => {
       state.value = "aum logout";

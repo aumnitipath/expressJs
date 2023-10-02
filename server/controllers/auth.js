@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { token } = require("morgan");
 
 exports.register = async (req, res) => {
   try {
@@ -48,6 +49,7 @@ exports.login = async (req, res) => {
       let payload = {
         user: {
           name: user.name,
+          role: user.role,
         },
       };
       // 3. Generate Token
@@ -60,6 +62,22 @@ exports.login = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.currentUser = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      // search name and role ว่ามีอยู่ในระบบไหม?
+      name: req.user.name,
+      role: req.user.role,
+    })
+      .select("-password") // ไม่ต้องการ password ให้ส่งมา ก็ select และใส่ ลบpassword
+      .exec();
+    res.send(user);
+  } catch (err) {
+    console.log(err);
     res.status(500).send("Server Error");
   }
 };
