@@ -3,12 +3,16 @@ const User = require("../models/User");
 
 exports.auth = async (req, res, next) => {
   try {
+    //check token
     const token = req.headers["authtoken"];
 
     if (!token) {
       return res.status(401).send("No token");
     }
 
+    console.log(user);
+
+    // else ตรวจสอบ token ว่าถูกต้องไหม
     const decoded = jwt.verify(token, "jwtsecret");
     req.user = decoded.user;
 

@@ -5,7 +5,7 @@ const { token } = require("morgan");
 
 exports.register = async (req, res) => {
   try {
-    // 1.CheckUser
+    // 1.CheckUser : have user or not
     const { name, password } = req.body;
 
     let user = await User.findOne({ name });
@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
       return res.send("User Already Exists!!").status(400);
     }
 
-    // 2.Encrypt
+    // 2.Encrypt เข้ารหัส password
     const salt = await bcrypt.genSalt(10);
     user = new User({
       name,
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
 
     user.password = await bcrypt.hash(password, salt);
 
-    // 3.save
+    // 3.save in db
     await user.save();
     res.send("Register Success");
   } catch (error) {

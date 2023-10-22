@@ -64,6 +64,7 @@ export default function Login() {
           })
         );
         localStorage.setItem("token", res.data.token); // เก็บ token ที่ login เข้ามาแล้วไว้ใน localStorage
+
         roleRedirects(res.data.payload.user.role);
       })
       .catch((err) => console.log(err));
