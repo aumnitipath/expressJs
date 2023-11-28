@@ -27,6 +27,6 @@ app.use(bodyParse.json({ limit: "10mb" }));
 //Route 3
 readdirSync("./routes").map((r) => app.use("/", require("./routes/" + r)));
 
-app.listen(5000, () => {
+app.listen(3002, () => {
   console.log(`Server is Running port 5000`);
 });
